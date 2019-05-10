@@ -21,8 +21,8 @@
     "android"
   ],
   "repository": "github:pankajgupta1/react-native-tap-payment",
-  "bugs": "https://github.com/IMRahulSaini/react-native-tap-payment/issues",
-  "homepage": "https://github.com/IMRahulSaini/react-native-tap-payment",
+  "bugs": "https://github.com/pankajgupta1/react-native-tap-payment/issues",
+  "homepage": "https://github.com/pankajgupta1/react-native-tap-payment",
   "author": "Rahul & Pankaj",
   "license": "MIT",
   "peerDependencies": {
