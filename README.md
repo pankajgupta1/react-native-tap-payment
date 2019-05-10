@@ -1,5 +1,6 @@
 
 # react-native-tap-payment
+React Native Tap Payment binding for Android platform
 
 ## Getting started
 
