@@ -37,9 +37,9 @@
 
 ## Usage
 ```javascript
-import RNTapPayment from 'react-native-tap-payment';
+import TapPayment from 'react-native-tap-payment';
 
 // TODO: What to do with the module?
-RNTapPayment;
+TapPayment;
 ```
   
