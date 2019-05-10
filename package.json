@@ -1,14 +1,25 @@
 {
   "name": "react-native-tap-payment",
   "version": "1.0.0",
-  "description": "",
+  "description": "React Native Tap Payment binding for Android platform",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react-native"
+    "react",
+    "react-native",
+    "tap",
+    "react-native-tap-payment",
+    "tap-payment",
+    "tap-pay",
+    "kuwait payment",
+    "ios",
+    "android"
   ],
+  "repository": "github:pankajgupta1/react-native-tap-payment",
+  "bugs": "https://github.com/IMRahulSaini/react-native-tap-payment/issues",
+  "homepage": "https://github.com/IMRahulSaini/react-native-tap-payment",
   "author": "Rahul & Pankaj",
   "license": "MIT",
   "peerDependencies": {
