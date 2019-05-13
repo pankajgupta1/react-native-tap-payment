@@ -40,7 +40,9 @@ React Native Tap Payment binding for Android platform
 ```javascript
 import TapPayment from 'react-native-tap-payment';
 
-TapPayment.openTapPaymentUI(SecretAPIkey, AppID, CustomerId, Currency, price, () => {});
+TapPayment.openTapPaymentUI(SecretAPIkey, AppID, CustomerId, Currency, price, (result) => {
+	console.log('payment result', result)
+});
 
 ```
 ## Example
