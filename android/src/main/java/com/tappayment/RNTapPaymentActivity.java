@@ -29,6 +29,7 @@ import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import java.math.BigDecimal;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
+import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.internal.api.models.Charge;
 import android.support.annotation.NonNull;
@@ -40,12 +41,18 @@ import company.tap.gosellapi.open.models.Receipt;
 
 public class RNTapPaymentActivity extends AppCompatActivity implements SessionDelegate {
     private SDKSession sdkSession;
+    private PayButtonView payButtonView;
+    private final int SDK_REQUEST_CODE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y", "company.tap.goSellSDKExample");
+        Bundle extras = getIntent().getExtras();
+        String SecretAPIkey = extras.getString("SecretAPIkey");
+        String AppID = extras.getString("AppID");
+
+        GoSellSDK.init(this, SecretAPIkey, AppID);
 
         configureSDKThemeObject();
         configureSDKSession();
@@ -79,6 +86,8 @@ public class RNTapPaymentActivity extends AppCompatActivity implements SessionDe
 
                 // show/hide pay button loader
                 .setPayButtonLoaderVisible(true) // **Optional**
+                // .setPayButtonEnabledBackgroundColor(getResources().getColor(R.color.yellow))
+                // .setPayButtonDisabledBackgroundColor(getResources().getColor(R.color.french_gray))
 
                 // show/hide pay button security icon
                 .setPayButtonSecurityIconVisible(true) // **Optional**
@@ -91,6 +100,7 @@ public class RNTapPaymentActivity extends AppCompatActivity implements SessionDe
 
         Bundle extras = getIntent().getExtras();
         int price = extras.getInt("price");
+        String Currency = extras.getString("Currency");
 
         // Instantiate SDK Session
         if (sdkSession == null)
@@ -104,7 +114,7 @@ public class RNTapPaymentActivity extends AppCompatActivity implements SessionDe
         sdkSession.instantiatePaymentDataSource(); // ** Required **
 
         // set transaction currency associated to your account
-        sdkSession.setTransactionCurrency(new TapCurrency("KWD")); // ** Required **
+        sdkSession.setTransactionCurrency(new TapCurrency(Currency)); // ** Required **
 
         // set transaction mode [TransactionMode.PURCHASE -
         // TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD -
@@ -144,6 +154,8 @@ public class RNTapPaymentActivity extends AppCompatActivity implements SessionDe
 
         sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
 
+        // initPayButton();
+
         /**
          * Use this method where ever you want to show TAP SDK Main Screen. This method
          * must be called after you configured SDK as above This method will be used in
@@ -151,6 +163,26 @@ public class RNTapPaymentActivity extends AppCompatActivity implements SessionDe
          */
         sdkSession.start(this);
     }
+
+//     private void initPayButton() {
+
+//         payButtonView = findViewById(R.id.payButtonId);
+
+//         payButtonView.setupFontTypeFace(ThemeObject.getInstance().getPayButtonFont());
+
+//         payButtonView.setupTextColor(ThemeObject.getInstance().getPayButtonEnabledTitleColor(),
+//                 ThemeObject.getInstance().getPayButtonDisabledTitleColor());
+// //
+//         payButtonView.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
+// //
+//         payButtonView.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible()?View.VISIBLE:View.INVISIBLE);
+
+//         payButtonView.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
+//         payButtonView.setupBackgroundWithColorList(getResources().getColor(R.color.yellow) , getResources().getColor(R.color.red));
+
+//         sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
+//     }
+
 
     private Customer getCustomer() {
         Bundle extras = getIntent().getExtras();
