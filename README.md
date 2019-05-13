@@ -12,14 +12,15 @@ React Native Tap Payment binding for Android platform
 
 ### Manual installation
 
-<!---
+-
 #### iOS
 
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
+We are developing...
+<!-- 1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
 2. Go to `node_modules` ➜ `react-native-tap-payment` and add `RNTapPayment.xcodeproj`
 3. In XCode, in the project navigator, select your project. Add `libRNTapPayment.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)<
--->
+4. Run your project (`Cmd+R`)< -->
+
 #### Android
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
