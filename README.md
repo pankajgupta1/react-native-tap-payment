@@ -12,7 +12,6 @@ React Native Tap Payment binding for Android platform
 
 ### Manual installation
 
--
 #### iOS
 
 We are developing...
