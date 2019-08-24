@@ -47,7 +47,7 @@ import TapPayment from 'react-native-tap-payment';
 let data = {
 	SecretAPIkey: 'sk_test_kovrMB0mupFJXfNZWx6Etg5y',
 	AppID: "company.tap.goSellSDKExample",
-	CustomerId: 'cus_c1R02820192008h1X10805371',
+	CustomerId: '', //if customer id available then CustomerId :'cus_c1R02820192008h1X10805371', else empty string
 	price: 199,
 	Currency: 'KWD',
 	UILanguage: 'en',
