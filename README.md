@@ -3,8 +3,8 @@
 React Native Tap Payment binding for Android platform
 
 #### Support
--Android: version should be <= 0.59
--iOS: no support
+- Android: version should be <= 0.59
+- iOS: no support
 
 ## Getting started
 
@@ -62,7 +62,7 @@ let data = {
 
 
 TapPayment.openTapPaymentUI(data, (result) => {
-		console.log('payment result', result)
+	console.log('payment result', result)
 })
 
 ```
