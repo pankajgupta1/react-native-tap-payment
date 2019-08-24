@@ -1,8 +1,12 @@
 package com.tappayment;
 
+import java.util.Locale;
+
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
+import android.text.TextUtils;
+import android.content.res.Configuration;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,8 +51,17 @@ public class RNTapPaymentActivity extends AppCompatActivity implements SessionDe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
         Bundle extras = getIntent().getExtras();
+        String UILanguage = extras.getString("UILanguage");
+
+        Locale locale = new Locale(UILanguage);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+
+        setContentView(R.layout.activity_main);
         String SecretAPIkey = extras.getString("SecretAPIkey");
         String AppID = extras.getString("AppID");
 
@@ -187,22 +200,35 @@ public class RNTapPaymentActivity extends AppCompatActivity implements SessionDe
     private Customer getCustomer() {
         Bundle extras = getIntent().getExtras();
         String CustomerId = extras.getString("CustomerId");
-        return new Customer.CustomerBuilder(CustomerId).email("pankaj@teamlance.io")
-                .firstName("firstname").lastName("lastname").metadata("").phone(new PhoneNumber("000", "0000000"))
-                .middleName("middlename").build();
+        if(TextUtils.equals(CustomerId, "")) {
+            String firstName = extras.getString("firstName");
+            String lastName = extras.getString("lastName");
+            String email = extras.getString("email");
+            String countryCode = extras.getString("countryCode");
+            String phoneNumber = extras.getString("phoneNumber");
+            return new Customer.CustomerBuilder("").email(email)
+                .firstName(firstName).lastName(lastName).phone(new PhoneNumber(countryCode  , phoneNumber))
+                .build();
+        } else {
+            return new Customer.CustomerBuilder(CustomerId).build();
+        }
     }
 
     public void paymentSucceed(@NonNull Charge charge) {
         System.out.println("Payment Succeeded : " + charge.getStatus());
         System.out.println("Payment Succeeded : " + charge.getDescription());
-        System.out.println("Payment Succeeded : " + charge.getCustomer().getIdentifier());
         System.out.println("Payment Succeeded : " + charge.getResponse().getMessage());
         showDialog(charge.getId(), charge.getResponse().getMessage(),
                 company.tap.gosellapi.R.drawable.ic_checkmark_normal);
         WritableMap params = Arguments.createMap();
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("custId", "123");
-        setResult(100, resultIntent);
+        resultIntent.putExtra("resultMessage", charge.getResponse().getMessage());
+        resultIntent.putExtra("resultCode", charge.getResponse().getCode());
+        resultIntent.putExtra("chargeId", charge.getId());
+        resultIntent.putExtra("custId", charge.getCustomer().getIdentifier());
+        resultIntent.putExtra("currency", charge.getCurrency());
+        resultIntent.putExtra("amount", charge.getAmount());
+        setResult(Integer.parseInt(charge.getResponse().getCode()), resultIntent);
         finish();
     };
 
@@ -212,26 +238,52 @@ public class RNTapPaymentActivity extends AppCompatActivity implements SessionDe
         System.out.println("Payment Failed : " + charge.getResponse().getMessage());
         showDialog(charge.getId(), charge.getResponse().getMessage(), company.tap.gosellapi.R.drawable.icon_failed);
         Intent resultIntent = new Intent();
-        setResult(101, resultIntent);
+        resultIntent.putExtra("resultMessage", charge.getResponse().getMessage());
+        resultIntent.putExtra("resultCode", charge.getResponse().getCode());
+        resultIntent.putExtra("chargeId", charge.getId());
+        resultIntent.putExtra("custId", charge.getCustomer().getIdentifier());
+        resultIntent.putExtra("currency", charge.getCurrency());
+        resultIntent.putExtra("amount", charge.getAmount());
+        setResult(Integer.parseInt(charge.getResponse().getCode()), resultIntent);
         finish();
     };
 
     public void authorizationSucceed(@NonNull Authorize authorize) {
         showDialog(authorize.getId(), authorize.getResponse().getMessage(),
                 company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("resultMessage", authorize.getResponse().getMessage());
+        resultIntent.putExtra("resultCode", authorize.getResponse().getCode());
+        setResult(Integer.parseInt(authorize.getResponse().getCode()), resultIntent);
+        finish();
     };
 
     public void authorizationFailed(Authorize authorize) {
         showDialog(authorize.getId(), authorize.getResponse().getMessage(),
                 company.tap.gosellapi.R.drawable.icon_failed);
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("resultMessage", authorize.getResponse().getMessage());
+        resultIntent.putExtra("resultCode", authorize.getResponse().getCode());
+        setResult(Integer.parseInt(authorize.getResponse().getCode()), resultIntent);
+        finish();
     };
 
     public void cardSaved(@NonNull Charge charge) {
         showDialog(charge.getId(), charge.getStatus().toString(), company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("resultMessage", charge.getResponse().getMessage());
+        resultIntent.putExtra("resultCode", charge.getResponse().getCode());
+        setResult(Integer.parseInt(charge.getResponse().getCode()), resultIntent);
+        finish();
     };
 
     public void cardSavingFailed(@NonNull Charge charge) {
         showDialog(charge.getId(), charge.getStatus().toString(), company.tap.gosellapi.R.drawable.icon_failed);
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("resultMessage", charge.getResponse().getMessage());
+        resultIntent.putExtra("resultCode", charge.getResponse().getCode());
+        setResult(Integer.parseInt(charge.getResponse().getCode()), resultIntent);
+        finish();
     };
 
     public void cardTokenizedSuccessfully(@NonNull String token) {
@@ -240,6 +292,11 @@ public class RNTapPaymentActivity extends AppCompatActivity implements SessionDe
     public void sdkError(@Nullable GoSellError goSellError) {
         showDialog(goSellError.getErrorCode() + "", goSellError.getErrorMessage(),
                 company.tap.gosellapi.R.drawable.icon_failed);
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("resultMessage", goSellError.getErrorMessage());
+        resultIntent.putExtra("resultCode", goSellError.getErrorCode());
+        setResult(goSellError.getErrorCode(), resultIntent);
+        finish();
     };
 
     public void sessionIsStarting() {
@@ -252,6 +309,8 @@ public class RNTapPaymentActivity extends AppCompatActivity implements SessionDe
     public void sessionCancelled() {
         Intent resultIntent = new Intent();
         setResult(102, resultIntent);
+        resultIntent.putExtra("resultMessage", "");
+        resultIntent.putExtra("resultCode", 102);
         finish();
     };
 

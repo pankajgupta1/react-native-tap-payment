@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.tappayment">
     <application>
-      <activity android:name=".RNTapPaymentActivity" android:parentActivityName=".MainActivity" />
+      <activity android:name=".RNTapPaymentActivity" android:theme="@style/TapTheme" android:parentActivityName=".MainActivity" />
     </application>
 </manifest>
   

@@ -1,0 +1,11 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="TapTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">@color/lighter_gray</item>
+        <item name="colorAccent">@color/yellow</item>
+
+    </style>
+
+</resources>
