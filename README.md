@@ -2,6 +2,10 @@
 # react-native-tap-payment
 React Native Tap Payment binding for Android platform
 
+#### support
+Android: version should be <= 0.59 
+iOS: no support
+
 ## Getting started
 
 `$ npm install react-native-tap-payment --save`
@@ -40,17 +44,25 @@ We are developing...
 ```javascript
 import TapPayment from 'react-native-tap-payment';
 
-TapPayment.openTapPaymentUI(SecretAPIkey, AppID, CustomerId, Currency, price, (result) => {
-	console.log('payment result', result)
-});
+	let data = {
+			SecretAPIkey: 'sk_test_kovrMB0mupFJXfNZWx6Etg5y',
+			AppID: "company.tap.goSellSDKExample",
+			CustomerId: 'cus_c1R02820192008h1X10805371',
+			price: 199,
+			Currency: 'KWD',
+			UILanguage: 'en',
+			Customer: {
+					firstName: 'Barack',
+					lastName: 'Obama',
+					email: 'barack@gmail.com',
+					countryCode: '965',
+					phoneNumber: '1234567'
+			}
+	}
 
-```
-## Example
 
-```
-TapPayment.openTapPaymentUI('sk_test_kovrMB0mupFJXfNZWx6Etg5y', "company.tap.goSellSDKExample", 'cus_c1R02820192008h1X10805371', 'KWD', 199, (result) => {
+TapPayment.openTapPaymentUI(data, (result) => {
 		console.log('payment result', result)
 })
 
 ```
-  
